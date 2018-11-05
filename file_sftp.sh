@@ -29,37 +29,36 @@ f_pid () {
             exit 0
     fi
     echo $s_pid > $s_tmpdir/$s_name.pid
-    echo "PID File mit folgendem Inhalt wurde Angelegt: $s_pid" >> $s_log          # Temporäre Kontrollfunktion
+    echo `date` "------ PID File created. $s_pid " >> $s_log          # Temporäre Kontrollfunktion
 }
 
 f_logstart () {
     echo -e "\n----------------------------------------" >> $s_log 
     echo -e "\n----------------------------------------" >> $s_err
-    echo -e "--- `date` --- Script gestartet. ---" >> $s_log
-    echo -e "--- `date` --- Script gestartet. ---" >> $s_err
+    echo -e "--- `date` --- Script startet. ---" >> $s_log
+    echo -e "--- `date` --- Script startet. ---" >> $s_err
 }
 
 f_pars_parameter () {
     VAR1=`echo $1 | cut -d ";" -f1`
     VAR2=`echo $1 | cut -d ";" -f2`
     VAR3=`echo $1 | cut -d ";" -f3`
-    echo $VAR1
-    echo $VAR2
-    echo $VAR3
 }
 
 ### SCRIPT ###
 f_logstart
 f_pid
-echo `date` "------ PID File created. $s_pid " >> $s_log
+
 TEMP=`mktemp -p $s_tempdir`
 echo `date` "------ Temp File created. $TEMP" >> $s_log
 grep -v '^#' $s_confdir/$s_name.conf | grep -v ^$ > $TEMP
 echo `date` "------ Temp File fill with parameter. " >> $s_log
 while read VAR
 do
-    echo "$VAR"
     f_pars_parameter $VAR
+    echo $VAR1
+    echo $VAR2
+    echo $VAR3
 done < $TEMP
 rm $TEMP
 rm $s_pid
