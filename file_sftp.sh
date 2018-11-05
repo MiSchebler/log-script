@@ -20,6 +20,7 @@ s_log=$s_logdir/$s_name-$(date +%Y%m%d).log
 s_pid=$s_tempdir/$s_name.pid 
 s_date=`date +%Y%m%d`                           # Datum fürs Script selber
 s_pid=$$
+s_err=$s_logdir/$s_name-$(date +%Y%m%d).err
 
 ### FUNCTION ###
 f_pid () {
@@ -33,9 +34,9 @@ f_pid () {
 
 f_logstart () {
     echo -e "\n----------------------------------------" >> $s_log 
-    echo -e "\n----------------------------------------" >> $s_logdir/$s_name-$s_date.err
+    echo -e "\n----------------------------------------" >> $s_err
     echo -e "--- `date` --- Script gestartet. ---" >> $s_log
-    echo -e "--- `date` --- Script gestartet. ---" >> $s_logdir/$s_name-$s_date.err
+    echo -e "--- `date` --- Script gestartet. ---" >> $s_err
 }
 
 f_pars_parameter () {
