@@ -18,9 +18,27 @@ s_confdir=$s_path/conf
 s_logdir=$s_path/log 
 s_log=$s_logdir/$s_name-$(date +%Y%m%d).log 
 s_pid=$s_tempdir/$s_name.pid 
+s_date=`date +%Y%m%d`                           # Datum fürs Script selber
+s_pid=$$
 
 ### FUNCTION ###
-pars_parameter () {
+f_pid () {
+    if [ -e $s_tmpdir/$s_name.pid ]
+        then
+            exit 0
+    fi
+    echo $s_pid > $s_tmpdir/$s_name.pid
+    echo "PID File mit folgendem Inhalt wurde Angelegt: $s_pid" >> $s_log          # Temporäre Kontrollfunktion
+}
+
+f_logstart () {
+    echo -e "\n----------------------------------------" >> $s_log 
+    echo -e "\n----------------------------------------" >> $s_logdir/$s_name-$s_date.err
+    echo -e "--- `date` --- Script gestartet. ---" >> $s_log
+    echo -e "--- `date` --- Script gestartet. ---" >> $s_logdir/$s_name-$s_date.err
+}
+
+f_pars_parameter () {
     VAR1=`echo $1 | cut -d ";" -f1`
     VAR2=`echo $1 | cut -d ";" -f2`
     VAR3=`echo $1 | cut -d ";" -f3`
@@ -30,8 +48,8 @@ pars_parameter () {
 }
 
 ### SCRIPT ###
-echo `date` "------ Script Started -----">> $s_log
-echo $$ > $s_pid
+f_logstart
+f_pid
 echo `date` "------ PID File created. $s_pid " >> $s_log
 TEMP=`mktemp -p $s_tempdir`
 echo `date` "------ Temp File created. $TEMP" >> $s_log
@@ -40,7 +58,7 @@ echo `date` "------ Temp File fill with parameter. " >> $s_log
 while read VAR
 do
     echo "$VAR"
-    pars_parameter $VAR
+    f_pars_parameter $VAR
 done < $TEMP
 rm $TEMP
 rm $s_pid
