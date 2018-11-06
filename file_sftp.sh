@@ -52,7 +52,7 @@ f_logstart
 f_pid
 TEMP=`mktemp -p $s_tempdir`
 echo `date` "------ Temp File created. $TEMP" >> $s_log
-mysql -u foo2 --password=steganos -P 3307 -h nas -N -D TEST -e 'SELECT CONCAT(Server,";",lgPath,";",Zweig,";",Application,";",Port,";",log_file ) FROM logs;' > $TEMP
+mysql -u foo2 --password=demo -P 3307 -h nas -N -D TEST -e 'SELECT CONCAT(Server,";",lgPath,";",Zweig,";",Application,";",Port,";",log_file ) FROM logs;' > $TEMP
 echo `date` "------ Temp File fill with parameter. " >> $s_log
 while read VAR
 do
