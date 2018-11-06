@@ -63,6 +63,7 @@ do
     echo "Application : $VAR4"
     echo "Port        : $VAR5"
     echo "File Mask   : $VAR6"
+    echo "============="
 done < $TEMP
 rm $TEMP
 rm $s_tempdir/$s_name.pid
