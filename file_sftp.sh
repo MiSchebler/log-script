@@ -23,7 +23,7 @@ s_err=$s_logdir/$s_name-$(date +%Y%m%d).err
 
 ### FUNCTION ###
 f_software () {
-    if [ whitch mysql ]
+    if whitch mysql
     then
         echo "MySql vorhanden"
     fi
