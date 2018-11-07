@@ -22,6 +22,13 @@ s_date=`date +%Y%m%d`                           # Datum fürs Script selber
 s_pid=$$
 
 ### FUNCTION ###
+f_software () {
+    if [ whitch mysql ]
+    then
+        echo "MySql vorhanden"
+    fi
+}
+
 f_pid () {
     if [ -e $s_tmpdir/$s_name.pid ]
         then
@@ -50,6 +57,7 @@ f_pars_parameter () {
 ### SCRIPT ###
 f_logstart
 f_pid
+f_software
 echo `date` "------ PID File created. $s_pid " >> $s_log
 TEMP=`mktemp -p $s_tempdir`
 echo `date` "------ Temp File created. $TEMP" >> $s_log
