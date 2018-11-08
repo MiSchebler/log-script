@@ -22,10 +22,18 @@ s_pid=$$
 s_err=$s_logdir/$s_name-$(date +%Y%m%d).err
 
 ### FUNCTION ###
-f_software () {
-    if ! which mysql
+f_software_check () {
+    if ! which mysql > /dev/null 
     then
-        echo "MySql vorhanden"
+        echo "MySql nicht vorhanden" >> $s_log
+        rm $s_tempdir/$s_name.pid
+        exit 1
+    fi
+    if ! which sftp > /dev/null
+    then
+        echo "SFTP nicht vorhanden" >> $s_log
+        rm $s_tempdir/$s_name.pid
+        exit 1
     fi
 }
 
@@ -54,15 +62,18 @@ f_pars_parameter () {
     VAR6=`echo $1 | cut -d ";" -f6`
 }
 
+f_data_db () {
+    TEMP=`mktemp -p $s_tempdir`
+    echo `date` "------ Temp File created. $TEMP" >> $s_log
+    mysql -u foo2 --password=demo -P 3307 -h nas -N -D TEST -e 'SELECT CONCAT(Server,";",lgPath,";",Zweig,";",Application,";",Port,";",log_file ) FROM logs;' > $TEMP
+    echo `date` "------ Temp File fill with parameter. " >> $s_log
+}
+
 ### SCRIPT ###
 f_logstart
 f_pid
-f_software
-echo `date` "------ PID File created. $s_pid " >> $s_log
-TEMP=`mktemp -p $s_tempdir`
-echo `date` "------ Temp File created. $TEMP" >> $s_log
-mysql -u foo2 --password=demo -P 3307 -h nas -N -D TEST -e 'SELECT CONCAT(Server,";",lgPath,";",Zweig,";",Application,";",Port,";",log_file ) FROM logs;' > $TEMP
-echo `date` "------ Temp File fill with parameter. " >> $s_log
+f_software_check
+f_data_db
 while read VAR
 do
     f_pars_parameter $VAR
