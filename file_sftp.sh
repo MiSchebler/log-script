@@ -20,6 +20,12 @@ s_log=$s_logdir/$s_name-$(date +%Y%m%d).log
 s_date=`date +%Y%m%d`                           # Datum fürs Script selber
 s_pid=$$
 s_err=$s_logdir/$s_name-$(date +%Y%m%d).err
+db_user=foo2
+db_pw=demo
+db_name=TEST
+db_host=nas
+db_port=3307        # Default 3306
+
 
 ### FUNCTION ###
 f_software_check () {
@@ -65,7 +71,7 @@ f_pars_parameter () {
 f_data_db () {
     TEMP=`mktemp -p $s_tempdir`
     echo `date` "------ Temp File created. $TEMP" >> $s_log
-    mysql -u foo2 --password=demo -P 3307 -h nas -N -D TEST -e 'SELECT CONCAT(Server,";",lgPath,";",Zweig,";",Application,";",Port,";",log_file ) FROM logs;' > $TEMP
+    mysql -u $db_user --password=$db_pw -P $db_port -h $db_host -N -D $db_name -e 'SELECT CONCAT(Server,";",lgPath,";",Zweig,";",Application,";",Port,";",log_file ) FROM logs;' > $TEMP
     echo `date` "------ Temp File fill with parameter. " >> $s_log
 }
 
@@ -84,6 +90,7 @@ do
     echo "Port        : $VAR5"
     echo "File Mask   : $VAR6"
     echo "============="
+
 done < $TEMP
 rm $TEMP
 rm $s_tempdir/$s_name.pid
