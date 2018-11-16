@@ -21,6 +21,10 @@ s_date=`date +%Y%m%d`                           # Datum fürs Script selber
 s_pid=$$
 s_err=$s_logdir/$s_name-$(date +%Y%m%d).err
 
+# Variable
+v_storage="/<PATH>"
+
+
 ### FUNCTION ###
 f_software_check () {
     if ! which mysql > /dev/null 
@@ -54,12 +58,12 @@ f_logstart () {
 }
 
 f_pars_parameter () {
-    VAR1=`echo $1 | cut -d ";" -f1`
-    VAR2=`echo $1 | cut -d ";" -f2`
-    VAR3=`echo $1 | cut -d ";" -f3`
-    VAR4=`echo $1 | cut -d ";" -f4`
-    VAR5=`echo $1 | cut -d ";" -f5`
-    VAR6=`echo $1 | cut -d ";" -f6`
+    v_server=`echo $1 | cut -d ";" -f1`
+    v_lgpath=`echo $1 | cut -d ";" -f2`
+    v_zweig=`echo $1 | cut -d ";" -f3`
+    v_app=`echo $1 | cut -d ";" -f4`
+    v_port=`echo $1 | cut -d ";" -f5`
+    v_file=`echo $1 | cut -d ";" -f6`
 }
 
 f_data_db () {
@@ -69,6 +73,19 @@ f_data_db () {
     echo `date` "------ Temp File fill with parameter. " >> $s_log
 }
 
+f_check_dir () {
+    if [ ! $v_storage/$v_zweig ]
+    then
+        mkdir $v_storage/$v_zweig
+    elif [ ! $v_storage/$v_zweig/$v_server ]
+    then
+        mkdir $v_storage/$v_zweig/$v_server
+    elif [ ! $v_storage/$v_zweig/$v_server/$v_app ]
+    then
+        mkdir $v_storage/$v_zweig/$v_server/$v_app
+    fi
+
+}
 ### SCRIPT ###
 f_logstart
 f_pid
@@ -77,13 +94,7 @@ f_data_db
 while read VAR
 do
     f_pars_parameter $VAR
-    echo "Server      : $VAR1"
-    echo "Path        : $VAR2"
-    echo "Zweig       : $VAR3"
-    echo "Application : $VAR4"
-    echo "Port        : $VAR5"
-    echo "File Mask   : $VAR6"
-    echo "============="
+    
 done < $TEMP
 rm $TEMP
 rm $s_tempdir/$s_name.pid
