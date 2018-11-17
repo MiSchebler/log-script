@@ -83,10 +83,12 @@ f_check_dir () {
     if [ ! $v_storage/$v_zweig ]
     then
         mkdir $v_storage/$v_zweig
-    elif [ ! $v_storage/$v_zweig/$v_server ]
+    fi
+    if [ ! $v_storage/$v_zweig/$v_server ]
     then
         mkdir $v_storage/$v_zweig/$v_server
-    elif [ ! $v_storage/$v_zweig/$v_server/$v_app ]
+    fi
+    if [ ! $v_storage/$v_zweig/$v_server/$v_app ]
     then
         mkdir $v_storage/$v_zweig/$v_server/$v_app
     fi
