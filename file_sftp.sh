@@ -94,6 +94,11 @@ f_check_dir () {
     fi
 
 }
+
+f_batch_create () {
+    batchtemp=`mktemp -p $s_tempdir`
+    echo -e "-get $1\n-rm $1\nexit" > batchtemp
+}
 ### SCRIPT ###
 f_logstart
 f_pid
@@ -101,7 +106,11 @@ f_software_check
 f_data_db
 while read VAR
 do
-    f_pars_parameter $VAR
+    f_pars_parameter $VAR   # Parameter parsen
+    f_check_dir             # Ordnerstrucktur prüfen
+    f_batch_create $v_file  # batch erstellen
+    sftp <VARIABLE>
+    rm $batchtemp
 done < $TEMP
 rm $TEMP
 rm $s_tempdir/$s_name.pid
