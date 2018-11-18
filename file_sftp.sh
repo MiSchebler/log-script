@@ -80,15 +80,15 @@ f_data_db () {
 }
 
 f_check_dir () {
-    if [ ! $v_storage/$v_zweig ]
+    if [ ! -d $v_storage/$v_zweig ]
     then
         mkdir $v_storage/$v_zweig
     fi
-    if [ ! $v_storage/$v_zweig/$v_server ]
+    if [ ! -d $v_storage/$v_zweig/$v_server ]
     then
         mkdir $v_storage/$v_zweig/$v_server
     fi
-    if [ ! $v_storage/$v_zweig/$v_server/$v_app ]
+    if [ ! -d $v_storage/$v_zweig/$v_server/$v_app ]
     then
         mkdir $v_storage/$v_zweig/$v_server/$v_app
     fi
