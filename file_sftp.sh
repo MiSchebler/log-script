@@ -14,9 +14,9 @@
 s_name=`basename $0 .sh`
 s_path=/home/pi/scripts/log-script
 s_tempdir=$s_path/tmp
-s_confdir=$s_path/conf 
-s_logdir=$s_path/log 
-s_log=$s_logdir/$s_name-$(date +%Y%m%d).log 
+s_confdir=$s_path/conf
+s_logdir=$s_path/log
+s_log=$s_logdir/$s_name-$(date +%Y%m%d).log
 s_date=`date +%Y%m%d`                           # Datum fürs Script selber
 s_pid=$$
 s_err=$s_logdir/$s_name-$(date +%Y%m%d).err
@@ -33,7 +33,7 @@ v_storage="/<PATH>"
 
 ### FUNCTION ###
 f_software_check () {
-    if ! which mysql > /dev/null 
+    if ! which mysql > /dev/null
     then
         echo "MySql nicht vorhanden" >> $s_log
         rm $s_tempdir/$s_name.pid
@@ -57,7 +57,7 @@ f_pid () {
 }
 
 f_logstart () {
-    echo -e "\n----------------------------------------" >> $s_log 
+    echo -e "\n----------------------------------------" >> $s_log
     echo -e "\n----------------------------------------" >> $s_err
     echo -e "--- `date` --- Script startet. ---" >> $s_log
     echo -e "--- `date` --- Script startet. ---" >> $s_err
